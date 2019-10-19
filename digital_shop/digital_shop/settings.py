@@ -28,7 +28,7 @@ SECRET_KEY = '8nl9pcp!)x4f(dmair2$6xfsgd40w^kiyv1^+@)wor67_zqy&3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['206.189.186.77', 'mindlabs.zone', 'localhost']
 
 
 # Application definition
@@ -159,10 +159,21 @@ WSGI_APPLICATION = 'digital_shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'myproject',
+        'USER': ‘madhan’,
+        'PASSWORD': ‘madhanpassword',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -217,7 +228,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static/')
 
 
 MEDIA_URL = '/media/'
