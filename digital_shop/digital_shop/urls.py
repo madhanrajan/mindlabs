@@ -18,6 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from machina import urls as machina_urls
 # from apps.app import application
 # from paypal.payflow.dashboard.app import application as payflow
 # from paypal.express.dashboard.app import application as express_dashboard
@@ -32,6 +33,7 @@ urlpatterns = [
     # Dashboard views for Express
     # path('dashboard/paypal/express/', express_dashboard.urls),
     # path('', application.urls),
+    path('forum/', include(machina_urls)),
 ]
 
 if settings.DEBUG:

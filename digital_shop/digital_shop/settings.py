@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from oscar.defaults import *  # noqa
+from machina import MACHINA_MAIN_STATIC_DIR
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -87,6 +88,22 @@ INSTALLED_APPS = [
     'django_tables2',
     'paypal',
     'storages',
+
+    # Machina dependencies:
+    'mptt',
+
+    # Machina apps:
+    'machina',
+    'machina.apps.forum',
+    'machina.apps.forum_conversation',
+    'machina.apps.forum_conversation.forum_attachments',
+    'machina.apps.forum_conversation.forum_polls',
+    'machina.apps.forum_feeds',
+    'machina.apps.forum_moderation',
+    'machina.apps.forum_search',
+    'machina.apps.forum_tracking',
+    'machina.apps.forum_member',
+    'machina.apps.forum_permission',
 ]
 
 
@@ -103,7 +120,8 @@ MIDDLEWARE = [
     'oscar.apps.basket.middleware.BasketMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 
-    'social_django.middleware.SocialAuthExceptionMiddleware',
+    # Machina
+    'machina.apps.forum_permission.middleware.ForumPermissionMiddleware',
 ]
 
 ROOT_URLCONF = 'digital_shop.urls'
@@ -111,8 +129,8 @@ ROOT_URLCONF = 'digital_shop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'oscar')],
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'oscar'), os.path.join(BASE_DIR, 'templates', 'flatpages'), os.path.join(BASE_DIR, 'templates', 'machina')],
+        # 'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -125,6 +143,11 @@ TEMPLATES = [
                 'oscar.core.context_processors.metadata',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
+                'machina.core.context_processors.metadata',
+            ],
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
             ],
         },
     },
@@ -201,10 +224,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
 
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
-
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
@@ -221,30 +240,31 @@ HAYSTACK_CONNECTIONS = {
 # SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Na1qGh7Ws6Y9sTSP2nArWvr'
 
 
-if DEBUG is False:
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'mysite/static'),
-    ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'mysite/static'),
+    MACHINA_MAIN_STATIC_DIR,
 
-    #
-    # Custom AWS Bucket key id, access key and bucketname
-    #
+]
 
-    AWS_ACCESS_KEY_ID = 'AKIA2Z5DPMYZLSBYU5NH'
-    AWS_SECRET_ACCESS_KEY = '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'
-    AWS_STORAGE_BUCKET_NAME = 'django-mindlabs'
-    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-    AWS_QUERYSTRING_EXPIRE = 3600
+#
+# Custom AWS Bucket key id, access key and bucketname
+#
 
-    AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400',
-    }
+AWS_ACCESS_KEY_ID = 'AKIA2Z5DPMYZLSBYU5NH'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'django-mindlabs'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_QUERYSTRING_EXPIRE = 3600
 
-    AWS_LOCATION = 'static'
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
 
-    DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'
+AWS_LOCATION = 'static'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
+DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'
 
 
 PAYPAL_SANDBOX_MODE = True
@@ -266,3 +286,27 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'mindlabs.zone@gmail.com'
 EMAIL_HOST_PASSWORD = 'qyrjit-gorfIx-4korvo'
 EMAIL_PORT = 587
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'machina_attachments': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp',
+    },
+}
+
+MACHINA_FORUM_NAME = "Mindlabs Forum"
+
+MACHINA_DEFAULT_AUTHENTICATED_USER_FORUM_PERMISSIONS = [
+    'can_see_forum',
+    'can_read_forum',
+    'can_start_new_topics',
+    'can_reply_to_topics',
+    'can_edit_own_posts',
+    'can_post_without_approval',
+    'can_create_polls',
+    'can_vote_in_polls',
+    'can_download_file',
+]
