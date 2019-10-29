@@ -192,7 +192,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     {% for obj in order.lines.all %}
-                        <a class="btn btn-primary btn-block btn-lg" href="{{obj.product.file.url}}">{% trans "Download" %}</a>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{obj.product.get_product_url }}">{% trans "Download" %}</a>
                     {% endfor %}
                 </div>
                 <div class="col-sm-4 col-sm-offset-4">
