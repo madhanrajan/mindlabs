@@ -9,4 +9,7 @@ class Product(AbstractProduct):
     def get_product_url(self):
         return self.file.url
 
+    def is_not_free(self):
+        return bool(self.stockrecords.get().price_excl_tax)
+
 from oscar.apps.catalogue.models import *  # noqa isort:skip

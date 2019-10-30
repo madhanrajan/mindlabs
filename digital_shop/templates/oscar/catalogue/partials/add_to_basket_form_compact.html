@@ -5,12 +5,21 @@
 {% purchase_info_for_product request product as session %}
 
 {% if session.availability.is_available_to_buy %}
-    {% basket_form request product 'single' as basket_form %}
-    <form action="{% url 'basket:add' pk=product.pk %}" method="post">
-        {% csrf_token %}
-        {{ basket_form.as_p }}
-        <button type="submit" class="btn btn-primary btn-block" data-loading-text="{% trans 'Adding...' %}">{% trans "Add to basket" %}</button>
-    </form>
+    {% if product.is_not_free %}
+        {% basket_form request product 'single' as basket_form %}
+        <form action="{% url 'basket:add' pk=product.pk %}" method="post">
+            {% csrf_token %}
+            {{ basket_form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block" data-loading-text="{% trans 'Adding...' %}">{% trans "Add to basket" %}</button>
+        </form>
+    {% else %}
+        <form action={{ product.get_product_url }} method="post">
+            {% csrf_token %}
+            
+            <button type="submit" class="btn btn-success btn-block" data-loading-text="{% trans 'Loading...' %}">{% trans "Download" %}</button>
+        </form>
+
+    {% endif %}
 {% else %}
     <span class="btn btn-default btn-block disabled">{% trans "Add to basket" %}</span>
 {% endif %}
