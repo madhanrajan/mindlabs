@@ -171,8 +171,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'myproject',
-        'USER': 'madhan',
-        'PASSWORD': 'madhanpassword',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -246,51 +246,13 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-#
-# Custom google sign in key and secret
-#
-
-# SOCIAL_AUTH_URL_NAMESPACE = 'social'
-
-# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '27379820568-cshf3povpnokpto63m7i4le6mkdp28ic.apps.googleusercontent.com'
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Na1qGh7Ws6Y9sTSP2nArWvr'
-
-
-# if DEBUG is False:
-#     STATICFILES_DIRS = [
-#         os.path.join(BASE_DIR, 'mysite/static'),
-#         MACHINA_MAIN_STATIC_DIR,
-
-#     ]
-
-#     #
-#     # Custom AWS Bucket key id, access key and bucketname
-#     #
-
-#     AWS_ACCESS_KEY_ID = 'AKIA2Z5DPMYZLSBYU5NH'
-#     AWS_SECRET_ACCESS_KEY = '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'
-#     AWS_STORAGE_BUCKET_NAME = 'django-mindlabs'
-#     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-#     AWS_QUERYSTRING_EXPIRE = 3600
-
-#     AWS_S3_OBJECT_PARAMETERS = {
-#         'CacheControl': 'max-age=86400',
-#     }
-
-#     AWS_LOCATION = 'static'
-#     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-#     STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-
-#     DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'
-
-
 PAYPAL_SANDBOX_MODE = True
 PAYPAL_CALLBACK_HTTPS = False
 PAYPAL_API_VERSION = '119'
 
-PAYPAL_API_USERNAME = 'sb-rwwsa183021_api1.business.example.com'
-PAYPAL_API_PASSWORD = 'KVB5PZGP5JML43N7'
-PAYPAL_API_SIGNATURE = 'A-LNTDdxy-ypaQYspxe5PuDvM9R1AAysiEB5i7p4cGQ8g8nr.bc8mVQi'
+PAYPAL_API_USERNAME = ''
+PAYPAL_API_PASSWORD = ''
+PAYPAL_API_SIGNATURE = ''
 
 PAYPAL_CURRENCY = PAYPAL_PAYFLOW_CURRENCY = 'GBP'
 PAYPAL_PAYFLOW_DASHBOARD_FORMS = True
@@ -300,8 +262,8 @@ DEFAULT_FROM_EMAIL = 'digi@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'mindlabs.zone@gmail.com'
-EMAIL_HOST_PASSWORD = 'qyrjit-gorfIx-4korvo'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 
 CACHES = {
